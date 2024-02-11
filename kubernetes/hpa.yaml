@@ -1,0 +1,25 @@
+apiVersion: autoscaling/v2 # Versão da API
+kind: HorizontalPodAutoscaler # tipo do recurso
+
+metadata:
+  name: java-docker # HPA name
+
+# specifications for HPA
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1 
+    kind: Deployment
+    name: java-docker 
+
+  minReplicas: 1 # Configuration for number minimum of replics
+  maxReplicas: 20 # Configuration for number maximum of replics
+
+  # Configuration of metrics used for automatic scaling
+  metrics:
+    - type: Resource # Metric type (in this case, resource metrics)
+      resource:
+        name: cpu # Resource name (CPU in this case)
+        target:
+          type: Utilization # Target type for the metric (Resource utilization)
+          averageUtilization: 30 # Average CPU utilization target (30%)
+
