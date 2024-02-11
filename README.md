@@ -1,101 +1,38 @@
-# Java-Docker Project DOCKER!
+# Main Branch - Java-Docker-Kubernetes Project
 
-Welcome to the `java-docker` project! This project demonstrates a simple Spring Boot application with REST endpoints, containerized using Docker. It's a straightforward example to showcase how to build, run, and push a Java application to Docker Hub.
+Welcome to the `main` branch of the Java-Docker-Kubernetes project. This branch serves as the central point that combines the Docker containerization process and the Kubernetes integration steps.
 
 ## Project Overview
 
-This project includes a basic Spring Boot application with two REST endpoints:
+This project is designed to demonstrate a complete workflow of developing a Java application, containerizing it using Docker, and orchestrating it with Kubernetes.
 
-- `/check`: Returns a simple message indicating the application is running.
-- `/users`: Returns a list of users as a JSON array.
+The `docker` branch contains the initial setup of the Java application, including the Dockerfile and the necessary configuration to build and push the image to Docker Hub at `carlosportella16/java-docker:v1`.
 
-### EndPointController.java
+The `kubernetes` branch showcases the subsequent steps of deploying this Docker image onto a Kubernetes cluster. It includes Kubernetes manifest files for deployment, services, ingress, and horizontal pod autoscaler (HPA) configurations.
 
-```java
-@RestController
-public class EndPointController {
+## How to Use This Repository
 
-    @GetMapping("/check")
-    public String checkStatus() {
-        return "Application is running!";
-    }
+To follow the application setup and deployment process, you should switch between branches as follows:
 
-    @GetMapping("/users")
-    public List<String> getUsers() {
-        return Arrays.asList("User 1", "User 2", "User 3");
-    }
-}
-```
+1. **Docker Setup**: Switch to the `docker` branch to view the Docker containerization process. You can switch branches by clicking on the branch name dropdown at the top of the repository page, as shown in the included image.
 
-## Dockerization
+   ![Switch Branches](https://github.com/carlosportella16/java-docker/assets/66968264/37f0b4d6-66d8-4938-9e2b-dbdd78dcec37)
 
-The application is Dockerized using the following `Dockerfile`:
+2. **Kubernetes Integration**: After completing the Docker setup, switch to the `kubernetes` branch to follow the Kubernetes integration steps using the Kind cluster setup and applying the Kubernetes manifests.
 
-```Dockerfile
-FROM openjdk:17-oracle
+## Step by Step Guide
 
-# Set the working directory in the container
-WORKDIR /app
+- **Switch to the `docker` branch**: Follow the README in the `docker` branch for instructions on building the Docker image and pushing it to Docker Hub.
+- **Switch to the `kubernetes` branch**: Continue with the README in the `kubernetes` branch for guidance on deploying the image from Docker Hub to your Kubernetes cluster using Kind.
 
-# Copy the application's jar file to the working directory
-COPY target/java-docker-0.0.1-SNAPSHOT.jar java-app.jar
+## Creating the Project
 
-# Expose port 8080
-EXPOSE 8080
+The project was initiated by setting up a simple Java application with REST endpoints. The Docker containerization was then implemented to encapsulate the application environment, ensuring consistency across different setups.
 
-# Command to run the application
-CMD java -jar java-app.jar & tail -f /dev/null
-```
+## Utilizing Kubernetes
 
-## Steps to Build, Run, and Push the Docker Image
+With the application containerized, Kubernetes manifests were created to define the deployment and service objects necessary for running the application on a Kubernetes cluster. The `kubernetes` branch contains all the required files and detailed instructions for setting up autoscaling, load balancing, and ingress rules.
 
-### Build the Docker Image
+## Conclusion
 
-To build the Docker image, navigate to the root directory of the project where the `Dockerfile` is located and run:
-
-```sh
-docker build -t java-docker:1.0 .
-```
-
-This command builds the Docker image with the tag `java-docker:1.0`.
-
-### Run the Container
-
-After building the image, you can run the container using:
-
-```sh
-docker run -d -p 8080:8080 java-docker:1.0
-```
-
-This command runs the container in detached mode, mapping port 8080 of the container to port 8080 on the host, allowing you to access the application's endpoints.
-
-### Push the Image to Docker Hub
-
-Before pushing the image to Docker Hub, ensure you're logged in to your Docker Hub account via the command line:
-
-```sh
-docker login
-```
-
-Then, tag your image with your Docker Hub username:
-
-```sh
-docker tag java-docker:1.0 <your-dockerhub-username>/java-docker:1.0
-```
-
-Finally, push the image to Docker Hub:
-
-```sh
-docker push <your-dockerhub-username>/java-docker:1.0
-```
-
-Replace `<your-dockerhub-username>` with your actual Docker Hub username.
-
-## Accessing the Application
-
-After running the container, you can access the application's endpoints through your browser or using a tool like `curl`:
-
-- **Check Endpoint**: `http://localhost:8080/check`
-- **Users Endpoint**: `http://localhost:8080/users`
-
-That's all! You've successfully containerized and deployed a simple Spring Boot application using Docker.
+By following the READMEs in the respective branches, you will be able to deploy a containerized Java application on a local Kubernetes cluster, illustrating a common CI/CD pipeline scenario. Ensure you follow the steps in the order they are presented to understand the entire containerization and orchestration process.
